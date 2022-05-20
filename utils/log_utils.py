@@ -46,36 +46,3 @@ def auto_write_logging_api(f):
                                payload, ip_address, None)
             raise e
     return wrapped
-
-
-def insert_logging_api(owner, log_level, funcation, payload, ip_address, result):
-    if payload and payload.get('passwd'):
-        payload['passwd'] = hashlib.sha256(
-            payload['passwd'].encode('utf-8')).hexdigest()
-
-    message = {
-        'user_id': owner,
-        'ip_address': ip_address,
-        'function': funcation,
-        'log_level': log_level,
-        'payload': json.dumps(payload)
-    }
-    if log_level == "WARNING":
-        # if result:
-        #     logging.warning({'result': result})
-        logging.warning(message)
-    else:
-        # if result:
-        #     logging.info({'result': result})
-        logging.info(message)
-
-
-def insert_logging_account(owner, action, message):
-    ip_address = request.remote_addr
-    message = {
-        'ip address': ip_address,
-        'log level': 'info',
-        'action': action,
-        'message': message
-    }
-    logging.info(message)
